@@ -1,7 +1,8 @@
+// @refresh reset
 const MemberProfile = () => {
   return (
     <div>
-      memberprofile@example.com
+      MemberProfile@example.com
     </div>
   )
 }

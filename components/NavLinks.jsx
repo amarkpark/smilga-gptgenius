@@ -1,7 +1,8 @@
+// @refresh reset
 const NavLinks = () => {
   return (
     <div className="my-2">
-      NavLinks Here
+      NavLinks here
     </div>
   )
 }
