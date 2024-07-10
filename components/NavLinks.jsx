@@ -1,6 +1,6 @@
 const NavLinks = () => {
   return (
-    <div>
+    <div className="my-2">
       NavLinks Here
     </div>
   )
