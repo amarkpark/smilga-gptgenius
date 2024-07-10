@@ -8,9 +8,7 @@ function LandingPage() {
           <p className="py-6">
           Software undergoes beta testing shortly before it’s released. Beta is Latin for “still doesn’t work”. (Anonymous)
           </p>
-          <button className="btn btn-primary">Get Started</button>
-          <div className="my-4"/>
-          <Link href="/chat">Goto Chat</Link>
+          <Link href="/chat" className="btn btn-primary">Get Started</Link>
         </div>
       </div>
     </div>
