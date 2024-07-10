@@ -1,3 +1,4 @@
+// @refresh reset
 const NavLinks = () => {
   return (
     <div className="my-2">

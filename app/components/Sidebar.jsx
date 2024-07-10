@@ -1,8 +1,8 @@
+// @refresh reset
 import SidebarHeader from "./SidebarHeader"
 import NavLinks from "./NavLinks"
 import MemberProfile from "./MemberProfile"
 
-export const dynamic = "force-dynamic";
 const Sidebar = () => {
   return (
     <div
