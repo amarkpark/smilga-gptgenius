@@ -1,5 +1,10 @@
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+Project is part of ongoing learning in udemy.com/course/nextjs-open-ai/
+This is the second project in the course "GPT Genus"
+
+The rest of what is below is original canned readme which may or may not change over time.
+
 ## Getting Started
 
 First, run the development server:
