@@ -4,9 +4,9 @@ import ThemeToggle from "./ThemeToggle";
 
 const SidebarHeader = () => {
   return (
-    <div className="text-lg flex items-center place-content-between">
+    <div className="text-xl font-bold flex items-center place-content-between">
       <span className="flex items-center gap-2">
-        <LuBrainCircuit />
+        <LuBrainCircuit className="size-6" />
         <span className="ml-2">GPTGenus</span>
       </span>
       <ThemeToggle />

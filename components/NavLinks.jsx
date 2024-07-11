@@ -1,9 +1,24 @@
 // @refresh reset
+import Link from "next/link"
+
+const links = [
+  {href: "/chat", name: "Chat"},
+  {href: "/tours", name: "Tours"},
+  {href: "/tour/new-tour", name: "New Tour"},
+  {href: "/profile", name: "Profile"},
+]
+
 const NavLinks = () => {
   return (
-    <div className="my-2">
-      NavLinks here
-    </div>
+    <ul className="menu bg-base-200 rounded-box w-56">
+      {links.map((link) => (
+        <li key={link.href}>
+          <Link href={link.href} className="capitalize">
+            {link.name}
+          </Link>
+        </li>
+      ))}
+    </ul>
   )
 }
 
