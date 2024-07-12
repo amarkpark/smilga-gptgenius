@@ -3,15 +3,15 @@ import { useState } from "react";
 import { LuMoon, LuSun } from "react-icons/lu";
 
 const themes = {
-  cupcake: "cupcake",
+  autumn: "autumn",
   coffee: "coffee",
 }
 
 const ThemeToggle = () => {
-  const [theme, setTheme] = useState(themes.cupcake);
+  const [theme, setTheme] = useState(themes.autumn);
 
   const toggleTheme = () => {
-    const newTheme = theme === themes.cupcake ? themes.coffee : themes.cupcake;
+    const newTheme = theme === themes.autumn ? themes.coffee : themes.autumn;
 
     try {
       document?.documentElement?.setAttribute("data-theme", newTheme);
@@ -24,7 +24,7 @@ const ThemeToggle = () => {
 
   return (
     <button className="btn btn-ghost btn-circle" onClick={toggleTheme}>
-      {theme === themes.cupcake
+      {theme === themes.autumn
         ? <LuMoon className="size-6" />
         : <LuSun className="size-6" />
       }
