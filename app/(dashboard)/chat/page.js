@@ -1,8 +1,10 @@
+import Chat from "@/components/Chat"
+
 function ChatPage() {
   return (
-    <div>
-      Happy ChatPage &#128513;
-    </div>
+    <>
+    <Chat />
+    </>
   )
 }
 
