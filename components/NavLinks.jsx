@@ -4,7 +4,7 @@ import Link from "next/link"
 const links = [
   {href: "/chat", name: "Chat"},
   {href: "/tours", name: "Tours"},
-  {href: "/tour/new-tour", name: "New Tour"},
+  {href: "/tours/explore", name: "Explore"},
   {href: "/profile", name: "Profile"},
 ]
 
