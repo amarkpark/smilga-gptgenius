@@ -23,3 +23,7 @@ export const generateChatResponse = async (chatMessages) => {
     return null;
   }
 }
+
+export const getExistingTour = async ({ city, country}) => {
+  return "getExistingTour";
+}
