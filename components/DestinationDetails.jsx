@@ -1,5 +1,6 @@
 
-const DestinationDetails = () => {
+const DestinationDetails = ({tour}) => {
+  console.log(tour);
   return (
     <div>
       DestinationDetails &#127919;
