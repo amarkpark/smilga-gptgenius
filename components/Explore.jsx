@@ -5,10 +5,16 @@ import { getExistingTour, generateTourResponse, createNewTour } from "../utils/a
 import DestinationDetails from "./DestinationDetails"
 
 const Explore = () => {
+  const queryClient = useQueryClient();
   const {mutate, isPending, data:tour} = useMutation({
     mutationFn: async (destination) => {
+      const existingTour = await getExistingTour(destination);
+      if (existingTour) return existingTour;
+
       const newTour = await generateTourResponse(destination);
       if (newTour) {
+        await createNewTour(newTour);
+        queryClient.invalidateQueries({queryKey: ["tour"]});
         return newTour;
       }
       toast.error("Destination not found. Please try another one.");
