@@ -30,7 +30,7 @@ export const getExistingTour = async ({ city, country}) => {
 
 export const generateTourResponse = async ({ city, country}) => {
   const query = `Find a ${city} in this ${country}.
-If ${city} in this ${country} exists, create a list of things active adult travelers can do in this ${city},${country}. 
+If ${city} in this ${country} exists, create a list of things active adult travelers can do to discover the delights of this ${city},${country}. 
 Once you have a list, create a one-day tour. Response should be in the following JSON format: 
 {
   "tour": {
