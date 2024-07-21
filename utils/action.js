@@ -23,6 +23,7 @@ export const generateChatResponse = async (chatMessages) => {
 }
 
 export const generateTourResponse = async ({ city, country}) => {
+  console.log("generate tour response", city, country);
   const query = `Find a ${city} in this ${country}.
 If ${city} in this ${country} exists, create a list of things active adult travelers can do to discover the delights of this ${city},${country}. 
 Once you have a list, create a one-day tour. Response should be in the following JSON format: 
@@ -57,17 +58,18 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
 }
 
 export const getExistingTour = async ({ city, country }) => {
+  console.log("get existing tour", city, country);
   return prisma.tour.findUnique({
     where: {
       city_country: {
-        city,
-        country,
+        city,country
       },
     },
   });
 };
 
 export const createNewTour = async (tour) => {
+  console.log("create new tour", tour);
   return prisma.tour.create({
     data: tour,
   });

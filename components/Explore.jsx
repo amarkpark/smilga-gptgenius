@@ -14,7 +14,7 @@ const Explore = () => {
       const newTour = await generateTourResponse(destination);
       if (newTour) {
         await createNewTour(newTour);
-        queryClient.invalidateQueries({queryKey: ["tour"]});
+        queryClient.invalidateQueries({queryKey: ["tours"]});
         return newTour;
       }
       toast.error("Destination not found. Please try another one.");
