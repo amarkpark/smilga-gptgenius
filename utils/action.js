@@ -46,6 +46,8 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
       model: "gpt-3.5-turbo",
       temperature: 0.3,
     });
+
+    console.log(response.choices[0].message.content);
     const tourData = JSON.parse(response.choices[0].message.content);
     if (!tourData.tour) {
       return null;

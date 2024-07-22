@@ -3,22 +3,29 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { getExistingTour, generateTourResponse, createNewTour } from "../utils/action"
 import DestinationDetails from "./DestinationDetails"
+import { toast } from "react-hot-toast"
 
 const Explore = () => {
   const queryClient = useQueryClient();
   const {mutate, isPending, data:tour} = useMutation({
     mutationFn: async (destination) => {
-      const existingTour = await getExistingTour(destination);
-      if (existingTour) return existingTour;
+      // const existingTour = await getExistingTour(destination);
+      // if (existingTour) {
+      //   console.log("returning existing tour", existingTour);
+      //   return existingTour;
+      // }
 
       const newTour = await generateTourResponse(destination);
-      if (newTour) {
-        await createNewTour(newTour);
-        queryClient.invalidateQueries({queryKey: ["tours"]});
-        return newTour;
+      if (!newTour || newTour.tour === null) {
+        toast.error("Destination not found.");
+        return null;
       }
-      toast.error("Destination not found. Please try another one.");
-      return null;
+
+      console.log("Tour destination", newTour);
+      await createNewTour(newTour);
+      queryClient.invalidateQueries({queryKey: ["tours"]});
+      return newTour;
+
     }
   })
 
