@@ -37,6 +37,7 @@ Once you have a list, create a one-day tour. Response should be in the following
   }
 }
 If you can't find info on exact ${city}, or ${city} does not exist, or it's population is less than 1, or it is not located in the following ${country} return { "tour": null }, with no additional characters.`;
+console.log("generateTourResponse query", query);
   try {
     const response = await openaiClient.chat.completions.create({
       messages: [
@@ -47,8 +48,12 @@ If you can't find info on exact ${city}, or ${city} does not exist, or it's popu
       temperature: 0.3,
     });
 
+    console.dir("this is the response", response);
+
     console.log(response.choices[0].message.content);
     const tourData = JSON.parse(response.choices[0].message.content);
+    console.log("this is the tour data generateTourResponse", tourData);
+
     if (!tourData.tour) {
       return null;
     }
@@ -64,7 +69,8 @@ export const getExistingTour = async ({ city, country }) => {
   return prisma.tour.findUnique({
     where: {
       city_country: {
-        city,country
+        city,
+        country,
       },
     },
   });

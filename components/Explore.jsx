@@ -9,13 +9,14 @@ const Explore = () => {
   const queryClient = useQueryClient();
   const {mutate, isPending, data:tour} = useMutation({
     mutationFn: async (destination) => {
-      // const existingTour = await getExistingTour(destination);
-      // if (existingTour) {
-      //   console.log("returning existing tour", existingTour);
-      //   return existingTour;
-      // }
+      const existingTour = await getExistingTour(destination);
+      if (existingTour) {
+        console.log("returning existing tour", existingTour);
+        return existingTour;
+      }
 
       const newTour = await generateTourResponse(destination);
+      console.log("new tour in mutation", newTour);
       if (!newTour || newTour.tour === null) {
         toast.error("Destination not found.");
         return null;
@@ -31,10 +32,6 @@ const Explore = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    // const formData = new FormData(event.target);
-    // const city = formData.get("city");
-    // const country = formData.get("country");
-    // console.log(city, country);
     const formData = new FormData(event.currentTarget);
     const destination = Object.fromEntries(formData.entries());
     console.log(destination);
