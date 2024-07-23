@@ -10,13 +10,12 @@ const AllToursPage = async () => {
   const queryClient = new QueryClient();
 
   await queryClient.prefetchQuery({
-    queryKey: ["tours"],
+    queryKey: ["tours", ""],
     queryFn: () => getAllTours(),
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      Happy ToursPage &#128513;
       <ToursPage />
     </HydrationBoundary>
   );
