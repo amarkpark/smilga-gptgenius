@@ -13,7 +13,7 @@ const DestinationDetails = ({tour}) => {
               key={stop}
               className="mb-4 bg-base-100 p-4 rounded-xl"
             >
-              <p>&#127919; {stop}</p>
+              <p>&#129517; {stop}</p>
             </li>
           );
         })}
