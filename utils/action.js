@@ -1,6 +1,7 @@
 "use server";
 import OpenAI from "openai";
 import prisma from "@/utils/db";
+import { revalidatePath } from "next/cache";
 
 const openaiClient = new OpenAI(process.env.OPENAI_API_KEY);
 
@@ -23,7 +24,7 @@ export const generateChatResponse = async (chatMessages) => {
 }
 
 export const generateTourResponse = async ({ city, country}) => {
-  console.log("generate tour response", city, country);
+  console.log("generate tour response for: ", city, country);
   const query = `Find a ${city} in this ${country}.
 If ${city} in this ${country} exists, create a list of things active adult travelers can do to discover the delights of this ${city},${country}. 
 Once you have a list, create a one-day tour. Response should be in the following JSON format: 
@@ -37,7 +38,7 @@ Once you have a list, create a one-day tour. Response should be in the following
   }
 }
 If you can't find info on exact ${city}, or ${city} does not exist, or it's population is less than 1, or it is not located in the following ${country} return { "tour": null }, with no additional characters.`;
-console.log("generateTourResponse query", query);
+// console.log("generateTourResponse query", query);
   try {
     const response = await openaiClient.chat.completions.create({
       messages: [
@@ -48,11 +49,11 @@ console.log("generateTourResponse query", query);
       temperature: 0.3,
     });
 
-    console.dir("this is the response", response);
+    // console.dir("this is the response", response);
 
-    console.log(response.choices[0].message.content);
+    // console.log(response.choices[0].message.content);
     const tourData = JSON.parse(response.choices[0].message.content);
-    console.log("this is the tour data generateTourResponse", tourData);
+    // console.log("this is the tour data generateTourResponse", tourData);
 
     if (!tourData.tour) {
       return null;
@@ -139,3 +140,53 @@ export const getOneTour = async (id) => {
     },
   });
 }
+
+export const fetchUserTokensById = async (clerkId) => {
+  const result = await prisma.token.findUnique({
+    where: {
+      clerkId,
+    },
+  });
+
+  return result?.tokens;
+};
+
+export const initializeUserTokensForId = async (clerkId) => {
+  const result = await prisma.token.create({
+    data: {
+      clerkId,
+    },
+  });
+
+  return result?.tokens;
+};
+
+export const fetchOrInitializeTokens = async (clerkId) => {
+  console.log("fetchOrInitializeTokens action", clerkId);
+  const result = await fetchUserTokensById(clerkId);
+  console.log("fetchOrInitializeTokens result", result);
+
+  if (result) {
+    return result;
+  }
+
+  return (await initializeUserTokensForId(clerkId)).tokens;
+};
+
+export const subtractTokens = async (clerkId, tokens) => {
+  const result = await prisma.token.update({
+    where: {
+      clerkId,
+    },
+    data: {
+      tokens: {
+        decrement: tokens,
+      },
+    },
+  });
+
+  revalidatePath("/profile");
+
+  // Return the new token value
+  return result.tokens;
+};

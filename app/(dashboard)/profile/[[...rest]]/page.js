@@ -1,7 +1,12 @@
+import TokensRemaining from "@/components/TokensRemaining"
 import { UserProfile } from "@clerk/nextjs"
 
 function ProfilePage() {
-  return <UserProfile />
+
+  return <div>
+    <TokensRemaining />
+    <UserProfile />
+  </div>
 }
 
 export default ProfilePage
