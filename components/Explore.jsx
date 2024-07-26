@@ -1,13 +1,24 @@
 "use client"
 
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { getExistingTour, generateTourResponse, createNewTour } from "../utils/action"
+import {
+  getExistingTour,
+  generateTourResponse,
+  createNewTour,
+  fetchUserTokensById,
+  subtractTokens
+} from "../utils/action"
 import DestinationDetails from "./DestinationDetails"
 import { toast } from "react-hot-toast"
+import { useAuth } from "@clerk/nextjs"
 
 const Explore = () => {
+  const MINIMUM_TOUR_TOKENS = process.env.MINIMUM_TOUR_TOKENS;
   const queryClient = useQueryClient();
+  const { userId } = useAuth();
   const {mutate, isPending, data:tour} = useMutation({
+    // these actions are built to run on client component because 
+    // Vercel has a timeout for Server-Side actions
     mutationFn: async (destination) => {
       const existingTour = await getExistingTour(destination);
       if (existingTour) {
@@ -15,17 +26,27 @@ const Explore = () => {
         return existingTour;
       }
 
+      const tokensRemaining = await fetchUserTokensById(userId);
+
+      if (tokensRemaining < MINIMUM_TOUR_TOKENS) {
+        toast.error("Not enough tokens remaining.");
+        return;
+      }
+
       const newTour = await generateTourResponse(destination);
       console.log("new tour in mutation", newTour);
+
       if (!newTour || newTour.tour === null) {
         toast.error("Destination not found.");
         return null;
       }
 
-      console.log("Tour destination", newTour);
-      await createNewTour(newTour);
+      console.log("Tour destination", newTour.tour);
+      await createNewTour(newTour.tour);
       queryClient.invalidateQueries({queryKey: ["tours"]});
-      return newTour;
+      const newTokens = await subtractTokens(userId, newTour.tokens);
+      toast.success(`${newTokens} tokens remaining...`);
+      return newTour.tour;
 
     }
   })
@@ -42,6 +63,7 @@ const Explore = () => {
     return <span className="loading loading-ring loading-lg text-secondary"></span>;
   }
 
+  // @ToDo: add image fetching to this page also, or in the component?
   return (
     <>
       <h2 className="text-3xl m-4 flex gap-2 items-center">
