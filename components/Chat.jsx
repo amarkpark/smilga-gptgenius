@@ -2,23 +2,52 @@
 "use client"
 
 import { useMutation } from "@tanstack/react-query";
+import { useAuth } from "@clerk/nextjs";
 import { useState } from "react";
-import { generateChatResponse } from "../utils/action";
+import {
+  generateChatResponse,
+  fetchUserTokensById,
+  subtractTokens,
+} from "../utils/action";
 import toast from "react-hot-toast";
 
 const Chat = () => {
+  const { userId } = useAuth();
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
+  const NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS = process.env.NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS;
+  console.log("NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS", NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS);
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (query) => generateChatResponse([...messages, query]),
-    onSuccess: (data) => {
-      if (!data) {
+    mutationFn: async (query) => {
+      console.log()
+      const tokensRemaining = await fetchUserTokensById(userId);
+
+      if (tokensRemaining < NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS) {
+        toast.error("Not enough tokens remaining.");
+        return;
+      }
+
+      const response = await generateChatResponse([...messages, query])
+
+      if (!response) {
         toast.error("Something went wrong.");
         return;
       }
-      setMessages((prev) => [...prev, data]);
+
+      setMessages((prev) => [...prev, response.message]);
+      const newTokens = await subtractTokens(userId, response.tokens);
+      toast.success(`${newTokens} tokens remaining...`);
     }
+
+    // mutationFn: (query) => generateChatResponse([...messages, query]),
+    // onSuccess: (data) => {
+    //   if (!data) {
+    //     toast.error("Something went wrong.");
+    //     return;
+    //   }
+    //   setMessages((prev) => [...prev, data]);
+    // }
   });
 
   const handleSubmit = (event) => {

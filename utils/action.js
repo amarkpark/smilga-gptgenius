@@ -4,6 +4,8 @@ import prisma from "@/utils/db";
 import { revalidatePath } from "next/cache";
 
 const openaiClient = new OpenAI(process.env.OPENAI_API_KEY);
+const NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS = parseInt(process.env.NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS);
+
 
 export const generateChatResponse = async (chatMessages) => {
   try {
@@ -14,9 +16,14 @@ export const generateChatResponse = async (chatMessages) => {
       ],
       model: "gpt-3.5-turbo",
       temperature: 0.3,
+      max_tokens: NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS,
     })
   
-    return response.choices[0].message;
+    // return response.choices[0].message;
+    return {
+      message: response.choices[0].message,
+      tokens: response.usage.total_tokens,
+    }
   } catch (error) {
     console.error(error);
     return null;

@@ -13,7 +13,7 @@ import { toast } from "react-hot-toast"
 import { useAuth } from "@clerk/nextjs"
 
 const Explore = () => {
-  const MINIMUM_TOUR_TOKENS = process.env.MINIMUM_TOUR_TOKENS;
+  const NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS = parseInt(process.env.NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS);
   const queryClient = useQueryClient();
   const { userId } = useAuth();
   const {mutate, isPending, data:tour} = useMutation({
@@ -28,7 +28,7 @@ const Explore = () => {
 
       const tokensRemaining = await fetchUserTokensById(userId);
 
-      if (tokensRemaining < MINIMUM_TOUR_TOKENS) {
+      if (tokensRemaining < NEXT_PUBLIC_MINIMUM_REQUIRED_TOKENS) {
         toast.error("Not enough tokens remaining.");
         return;
       }

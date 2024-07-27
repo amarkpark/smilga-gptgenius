@@ -2,6 +2,13 @@ Project is part of ongoing learning in [udemy.com/course/nextjs-open-ai/](udemy.
 
 This is the second project in the course: "GPT Genius"
 
+*ToDo:* (my own additions)
+- Use environmental variable for token limit in Prisma Tokens Model?
+- Implement a partial loading solution for tours?
+- Add debounce for Chat search input?
+- Add image fetchng to the Explore component
+- Format ToursList to be fully responsive and not break cards when name of city/country is long.
+
 The rest of what is below is original canned readme which may or may not change over time.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
