@@ -3,6 +3,7 @@ Project is part of ongoing learning in [udemy.com/course/nextjs-open-ai/](udemy.
 This is the second project in the course: "GPT Genius"
 
 *ToDo:* (my own additions)
+- Get Prisma migrations sorted
 - Use environmental variable for token limit in Prisma Tokens Model?
 - Implement a partial loading solution for tours?
 - Add debounce for Chat search input?
